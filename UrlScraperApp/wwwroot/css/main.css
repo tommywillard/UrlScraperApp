@@ -1,0 +1,30 @@
+﻿#scrapedImages.carousel {
+    margin: 3em auto;
+}
+
+#scrapedImages.carousel .carousel-item {
+    height: 500px;
+}
+
+    #scrapedImages.carousel .carousel-item img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 5px 0px rgb(0, 0, 0, 0.5);
+        margin: 10px;
+    }
+
+#scrapedImages .carousel-control-next,
+#scrapedImages .carousel-control-prev {
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 150px;
+    transform: translateY(-50%);
+    border-radius: 10px;
+    width: 100px;
+}

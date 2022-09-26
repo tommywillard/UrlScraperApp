@@ -1,0 +1,63 @@
+﻿@model UrlContent
+
+@if (Model.Images?.Any() == true)
+{
+    <div id="scrapedImages" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            @for (var i = 0; i < Model.Images.Count; i++)
+            {
+                @if (Model.Images[i].AltText?.Any() == true)
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "") ">
+                        <img src="@Model.Images[i].Url" alt="@Model.Images[i].AltText">
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <img src="@Model.Images[i].Url" alt="@Model.Images[i].AltText">
+                    </div>
+                }
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#scrapedImages" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#scrapedImages" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+}
+
+@if (!Model.TotalWordCount.ToString()?.Equals("") == true)
+{
+    <h2 class="mb-5">Total word count = @Model.TotalWordCount</h2>
+}
+
+@if (Model.TopWords?.Any() == true)
+{
+    <div class="table-responsive">
+        <table class="table table-striped caption-top">
+            <caption><h4 class="text-body">Most used words</h4></caption>
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Word</th>
+                    <th scope="col">Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.TopWords.Count; i++)
+                {
+                    <tr>
+                        <th scope="row">@(i + 1)</th>
+                        <td>@Model.TopWords[i].Text</td>
+                        <td>@Model.TopWords[i].WordCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
