@@ -16,7 +16,11 @@ namespace UrlScraperApp.Controllers
         public IActionResult Index()
         {
             var model = new UrlContent();
-
+            
+            // This was set up for testing and I ran out of time
+            // Also did not get the update of content on form submission set up
+            // Form will sumit url to get api and get data
+            // Can be tested in debug mode by setting breakpoints in get call
             using (var client = new HttpClient())
             {
                 client.BaseAddress = new Uri("https://localhost:7172/api/");
