@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using UrlScraperApp.Models;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace UrlScraperApp.Controllers.api
 {
     [Route("api/[controller]")]
@@ -13,9 +11,10 @@ namespace UrlScraperApp.Controllers.api
     {
         ////GET: api/<ScraperController>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] string url)
         {
-            var url = "https://www.ebay.com";
+            if (string.IsNullOrEmpty(url)) return BadRequest();
+
             var response = LoadUrl(url);
 
             if (response != null)

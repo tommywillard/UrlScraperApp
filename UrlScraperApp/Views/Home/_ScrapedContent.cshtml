@@ -31,10 +31,7 @@
     </div>
 }
 
-@if (!Model.TotalWordCount.ToString()?.Equals("") == true)
-{
-    <h2 class="mb-5">Total word count = @Model.TotalWordCount</h2>
-}
+<h2 class="mb-5">Total word count = @Model.TotalWordCount</h2>
 
 @if (Model.TopWords?.Any() == true)
 {
