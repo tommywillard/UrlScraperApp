@@ -34,8 +34,6 @@ namespace UrlScraperApp.Controllers
                 }
                 else //web api sent error response 
                 {
-                    //log response status here..
-
                     ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
                 }
             }

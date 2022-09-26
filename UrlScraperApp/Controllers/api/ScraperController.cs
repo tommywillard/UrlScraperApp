@@ -15,7 +15,10 @@ namespace UrlScraperApp.Controllers.api
         [HttpGet]
         public IActionResult Get()
         {
-            var url = "https://www.ebay.com";
+            var url = "";
+
+            if (string.IsNullOrEmpty(url)) return BadRequest();
+
             var response = LoadUrl(url);
 
             if (response != null)
