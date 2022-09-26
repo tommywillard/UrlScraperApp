@@ -13,16 +13,9 @@ namespace UrlScraperApp.Controllers.api
         [HttpGet]
         public IActionResult Get([FromQuery] string url)
         {
-            // This is used to test the front end of the site
-            // To test, remove comment from url assignment below
-            // Enter a url for the api to scrape
-            // Launch application
-            // Test data by adding "api/scraper?url={url}" to the end of the url in the address bar when application is running
-            //url = "https://www.ebay.com";
-
             if (string.IsNullOrEmpty(url)) return BadRequest();
 
-            var response = LoadUrl(url);
+            var response = ScrapeUrl(url);
 
             if (response != null)
             {
@@ -37,7 +30,7 @@ namespace UrlScraperApp.Controllers.api
         /// </summary>
         /// <param name="url"></param>
         /// <returns>UrlContent</returns>
-        public static UrlContent LoadUrl(string url)
+        public static UrlContent ScrapeUrl(string url)
         {
             var topWordNum = 10;
             var document = GetHtml(url);

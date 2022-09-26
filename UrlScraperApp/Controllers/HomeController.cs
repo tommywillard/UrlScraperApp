@@ -23,9 +23,16 @@ namespace UrlScraperApp.Controllers
             // Can be tested in debug mode by setting breakpoints in get call
             using (var client = new HttpClient())
             {
+                // This targetUrl variable is used to load initial data and test the front end of the site
+                // To test, enter a url for the api to scrape
+                // Launch application
+                // Test raw data by adding "api/scraper?url={url}" to the end of the url
+                // in your browser or Postman when application is running
+                var targetUrl = "https://revolution.co.com/";
+
                 client.BaseAddress = new Uri("https://localhost:7172/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync("scraper");
+                var responseTask = client.GetAsync("scraper?url=" + targetUrl);
                 responseTask.Wait();
 
                 var result = responseTask.Result;
