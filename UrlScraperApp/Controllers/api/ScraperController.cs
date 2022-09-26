@@ -61,17 +61,17 @@ namespace UrlScraperApp.Controllers.api
             List<Image> images = new List<Image>();
             var imageNodes = document.SelectNodes("//img");
 
-            if (!imageNodes?.Any() == true) { return images; };
+            if (imageNodes == null) { return images; };
 
             foreach (var imageNode in imageNodes)
             {
-                if (imageNode?.Attributes[@"src"]?.Value?.Any() == true)
+                if (!(imageNode?.Attributes[@"src"]?.Value == null))
                 {
                     var imageUrl = imageNode.Attributes[@"src"]?.Value?.ToString();
                     Image image = new Image
                     {
                         Url = !imageUrl.StartsWith("http") ? CleanUrlEndings(url) + "/" + CleanUrlEndings(imageUrl) : imageUrl,
-                        AltText = imageNode.Attributes[@"alt"]?.Value?.ToString()
+                        AltText = imageNode.Attributes[@"alt"]?.Value == null ? "" : imageNode.Attributes[@"alt"].Value.ToString()
                     };
 
                     images.Add(image);
@@ -90,7 +90,7 @@ namespace UrlScraperApp.Controllers.api
             List<Word> words = new List<Word>();
             var innerText = document.InnerText.Split();
 
-            if (!innerText?.Any() == true) { return words; };
+            if ((innerText == null)) { return words; };
 
             foreach (var text in innerText)
             {
