@@ -1,18 +1,9 @@
 ﻿using HtmlAgilityPack;
-using System.Web.Mvc;
 
 namespace UrlScraperApp.Extensions
 {
-    public static class ApiExtensions
+    public static class StringExtensions
     {
-        //Creates HtmlNode of requested url
-        public static HtmlNode GetHtml(this string url)
-        {
-            HtmlWeb web = new();
-            var htmlDoc = web.Load(url);
-            return htmlDoc.DocumentNode;
-        }
-
         //Removes '/' from beginning and end of url string
         public static string CleanUrlEndings(this string url)
         {
@@ -22,6 +13,14 @@ namespace UrlScraperApp.Extensions
             urlString = urlString.TrimStart(unwantedCharacter).TrimEnd(unwantedCharacter);
 
             return urlString;
+        }
+
+        //Creates HtmlNode of requested url
+        public static HtmlNode GetHtml(this string url)
+        {
+            HtmlWeb web = new();
+            var htmlDoc = web.Load(url);
+            return htmlDoc.DocumentNode;
         }
     }
 }

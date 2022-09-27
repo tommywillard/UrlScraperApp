@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
 using UrlScraperApp.Extensions;
 using UrlScraperApp.Models;
+using UrlScraperApp.Models.Data;
 
 namespace UrlScraperApp.Controllers.api
 {

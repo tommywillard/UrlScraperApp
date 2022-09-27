@@ -1,4 +1,6 @@
-﻿namespace UrlScraperApp.Models
+﻿using UrlScraperApp.Models.Data;
+
+namespace UrlScraperApp.Models
 {
     public class UrlContent
     {
