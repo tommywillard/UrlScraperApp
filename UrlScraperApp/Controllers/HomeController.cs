@@ -1,38 +1,38 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using UrlScraperApp.Models;
+using UrlScraperApp.Services;
 
 namespace UrlScraperApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IViewToStringRenderer _viewToStringRenderer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IViewToStringRenderer viewToStringRenderer)
         {
             _logger = logger;
+            _viewToStringRenderer = viewToStringRenderer;
         }
 
         public IActionResult Index()
         {
             var model = new UrlContent();
-            
-            // This was set up for testing and I ran out of time
-            // Also did not get the update of content on form submission set up
-            // Form will sumit url to get api and get data
-            // Can be tested in debug mode by setting breakpoints in get call
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateContent(string url)
+        {
+            var model = new UrlContent();
+
             using (var client = new HttpClient())
             {
-                // This targetUrl variable is used to load initial data and test the front end of the site
-                // To test, enter a url for the api to scrape
-                // Launch application
-                // Test raw data by adding "api/scraper?url={url}" to the end of the url
-                // in your browser or Postman when application is running
-                var targetUrl = "https://revolution.co.com/";
-
                 client.BaseAddress = new Uri("https://localhost:7172/api/");
                 //HTTP GET
-                var responseTask = client.GetAsync("scraper?url=" + targetUrl);
+                var responseTask = client.GetAsync("LoadUrl?url=" + url);
                 responseTask.Wait();
 
                 var result = responseTask.Result;
@@ -49,7 +49,9 @@ namespace UrlScraperApp.Controllers
                 }
             }
 
-            return View(model);
+            var partialString = await _viewToStringRenderer.RenderViewToString("/Views/Home/_ScrapedContent.cshtml", model, true);
+
+            return Json(new { success = true, payload = partialString });
         }
 
         public IActionResult Privacy()
