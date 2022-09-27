@@ -28,30 +28,40 @@ namespace UrlScraperApp.Controllers
         {
             var model = new UrlContent();
 
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri("https://localhost:7172/api/");
-                //HTTP GET
-                var responseTask = client.GetAsync("LoadUrl?url=" + url);
-                responseTask.Wait();
-
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    var readTask = result.Content.ReadFromJsonAsync<UrlContent>();
-                    readTask.Wait();
+                    client.BaseAddress = new Uri("https://localhost:7172/api/");
+                    
+                    //HTTP GET call to api
+                    var responseTask = client.GetAsync("LoadUrl?url=" + url);
+                    responseTask.Wait();
 
-                    model = readTask.Result;
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadFromJsonAsync<UrlContent>();
+                        readTask.Wait();
+
+                        model = readTask.Result;
+                    }
+                    else //web api sent error response 
+                    {
+                        ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
+                    }
                 }
-                else //web api sent error response 
-                {
-                    ModelState.AddModelError(string.Empty, "Server error. Please contact administrator.");
-                }
+
+                var partialString = await _viewToStringRenderer.RenderViewToString("/Views/Home/_ScrapedContent.cshtml", model, true);
+
+                return Json(new { success = true, payload = partialString });
             }
+            catch (Exception e)
+            {
+                _logger.LogError(e.Message);
 
-            var partialString = await _viewToStringRenderer.RenderViewToString("/Views/Home/_ScrapedContent.cshtml", model, true);
-
-            return Json(new { success = true, payload = partialString });
+                throw;
+            }
         }
 
         public IActionResult Privacy()

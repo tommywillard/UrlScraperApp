@@ -1,4 +1,4 @@
-﻿namespace UrlScraperApp.Models
+﻿namespace UrlScraperApp.Models.Data
 {
     public class Image
     {

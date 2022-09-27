@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+    //Controller method to make api call
     const updateMethod = '/Home/UpdateContent'
 
     $('#urlForm').submit(function (e) {
@@ -10,6 +11,7 @@
             url: `${updateMethod}?url=${targetUrl}`,
             dataType: 'json',
             success: function (data) {
+                //Updating partial
                 $('#scrapedContent').html(data.payload);
             },
             error: function (xhr, error, data) {

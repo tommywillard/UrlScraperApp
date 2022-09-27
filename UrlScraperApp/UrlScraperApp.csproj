@@ -21,8 +21,4 @@
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\api\" />
-  </ItemGroup>
-
 </Project>
