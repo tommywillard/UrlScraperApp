@@ -1,13 +1,14 @@
 ﻿using HtmlAgilityPack;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.RegularExpressions;
+using UrlScraperApp.Extensions;
 using UrlScraperApp.Models;
 
 namespace UrlScraperApp.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ScraperController : ControllerBase
+    public class LoadUrlController : ControllerBase
     {
         ////GET: api/<ScraperController>
         [HttpGet]
@@ -33,7 +34,7 @@ namespace UrlScraperApp.Controllers.api
         public static UrlContent ScrapeUrl(string url)
         {
             var topWordNum = 10;
-            var document = GetHtml(url);
+            var document = url.GetHtml();
             var totalWordCount = GetWords(document).Count;
             var topWords = totalWordCount >= topWordNum
                            ? GetWords(document).OrderByDescending(f => f.WordCount).Take(topWordNum).ToList()
@@ -69,7 +70,7 @@ namespace UrlScraperApp.Controllers.api
                     var imageUrl = imageNode.Attributes[@"src"]?.Value?.ToString();
                     Image image = new Image
                     {
-                        Url = !imageUrl.StartsWith("http") ? CleanUrlEndings(url) + "/" + CleanUrlEndings(imageUrl) : imageUrl,
+                        Url = !imageUrl.StartsWith("http") ? url.CleanUrlEndings() + "/" + imageUrl.CleanUrlEndings() : imageUrl,
                         AltText = imageNode.Attributes[@"alt"]?.Value == null ? "" : imageNode.Attributes[@"alt"].Value.ToString()
                     };
 
@@ -108,25 +109,6 @@ namespace UrlScraperApp.Controllers.api
             }
 
             return words;
-        }
-
-        //Creates HtmlNode of requested url
-        public static HtmlNode GetHtml(string url)
-        {
-            HtmlWeb web = new();
-            var htmlDoc = web.Load(url);
-            return htmlDoc.DocumentNode;
-        }
-
-        //Removes '/' from beginning and end of url string
-        public static string CleanUrlEndings(string url)
-        {
-            var urlString = url;
-            var unwantedCharacter = '/';
-
-            urlString = urlString.TrimStart(unwantedCharacter).TrimEnd(unwantedCharacter);
-
-            return urlString;
         }
     }
 }
