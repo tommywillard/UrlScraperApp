@@ -1,19 +1,19 @@
 ﻿$(document).ready(function () {
-    const endpoint = 'https://localhost:7172/api/scraper'
+    const updateMethod = '/Home/UpdateContent'
 
-    var form = $('#urlForm');
-    $(form).submit(function (e) {
+    $('#urlForm').submit(function (e) {
+        var targetUrl = $('#targetUrl').val();
+
         e.preventDefault();
         $.ajax({
-            type: 'GET',
-            url: endpoint,
-            data: `url=${$('#targetUrl').val()}`,
+            type: 'POST',
+            url: `${updateMethod}?url=${targetUrl}`,
             dataType: 'json',
             success: function (data) {
-                $('#scrapedContent').html(data);
+                $('#scrapedContent').html(data.payload);
             },
-            error: function (xhr, status, error) {
-                console.log(error);
+            error: function (xhr, error, data) {
+                console.log(`${xhr.statusText} - ${xhr.status}`);
             }
         });
     });
